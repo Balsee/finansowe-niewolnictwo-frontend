@@ -1,0 +1,27 @@
+{
+  "plugins": ["unused-imports"],
+  "extends": ["plugin:storybook/recommended", "next", "next/core-web-vitals", "eslint:recommended"],
+  "globals": {
+    "React": "readonly"
+  },
+  "rules": {
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
+      "rules": {
+        "storybook/hierarchy-separator": "error"
+      }
+    }
+  ]
+}
