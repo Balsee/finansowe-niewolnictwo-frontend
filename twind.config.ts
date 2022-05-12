@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 const twindConfig = {
   theme: {
     screens: {
@@ -15,7 +17,15 @@ const twindConfig = {
 
     extend: {
       colors: {
-        test: '#00aaff',
+        brand: {
+          red: '#fc1a1c',
+          yellow: '#ebec17',
+        },
+      },
+
+      fontFamily: {
+        sora: ['Sora', ...defaultTheme.fontFamily.sans],
+        publicSans: ['Public Sans', ...defaultTheme.fontFamily.sans],
       },
     },
   },

@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import { tw } from 'twind';
+import Footer from '../../components/layout/Footer/Footer';
+import Header from '../../components/layout/Header/Header';
 
 export interface IMainLayout {
   children?: any;
@@ -9,8 +11,7 @@ export interface IMainLayoutFunctions extends IMainLayout {}
 
 const MainLayout: React.FC<IMainLayoutFunctions> = ({ children }) => {
   const styles = {
-    header: tw``,
-    main: tw``,
+    main: tw`mt-16 py-4`,
     footer: tw``,
   };
 
@@ -20,9 +21,9 @@ const MainLayout: React.FC<IMainLayoutFunctions> = ({ children }) => {
         <title>Main Layout</title>
       </Head>
 
-      <header className={styles.header}>Header</header>
+      <Header />
       <main className={styles.main}>{children}</main>
-      <footer className={styles.footer}>Footer</footer>
+      <Footer />
     </>
   );
 };
