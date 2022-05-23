@@ -11,7 +11,7 @@ export interface IMainLayoutFunctions extends IMainLayout {}
 
 const MainLayout: React.FC<IMainLayoutFunctions> = ({ children }) => {
   const styles = {
-    main: tw`mt-16 py-4`,
+    main: tw`mt-16`,
     footer: tw``,
   };
 

@@ -1,19 +1,18 @@
 import { IconArrowRight } from '@tabler/icons';
-import Image from 'next/image';
 import Link from 'next/link';
 import { apply, tw } from 'twind';
 import { css } from 'twind/css';
+import Card from '../../common/Card/Card';
 import Wrapper from '../../utils/Wrapper/Wrapper';
 
 export interface IPosts {
   data?: any;
+  firstSectionRef?: any;
 }
 
 export interface IPostsFunctions extends IPosts {}
 
-const Posts: React.FC<IPostsFunctions> = ({ data }: any) => {
-  console.log(data);
-
+const Posts: React.FC<IPostsFunctions> = ({ data, firstSectionRef }: any) => {
   const styles = {
     posts: {
       base: tw`py-8`,
@@ -37,31 +36,14 @@ const Posts: React.FC<IPostsFunctions> = ({ data }: any) => {
   };
 
   return (
-    <section className={styles.posts.base}>
+    <section className={styles.posts.base} ref={firstSectionRef}>
       <Wrapper classes={styles.posts.wrapper}>
         <h2 className={styles.posts.title}>Nasze najnowsze posty</h2>
 
         <div className={styles.posts.posts}>
-          {data.map((post: any) => {
-            const banner = post.attributes.banner.data.attributes;
-
-            return (
-              <Link key={post.id} href={`/blog/${post.attributes.slug}`}>
-                <a className={styles.posts.post}>
-                  <Image
-                    src={process.env.NEXT_PUBLIC_BACKEND_ENDPOINT + banner.url}
-                    width={banner.width}
-                    height={768}
-                    quality={50}
-                    layout="responsive"
-                    objectFit="cover"
-                    alt={banner.alternativeText}
-                  />
-                  <h3>{post.attributes.title}</h3>
-                </a>
-              </Link>
-            );
-          })}
+          {data.map((post: any) => (
+            <Card key={post.id} post={post} />
+          ))}
         </div>
 
         <Link href="/blog">

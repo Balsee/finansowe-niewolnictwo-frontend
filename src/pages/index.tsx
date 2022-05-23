@@ -1,65 +1,46 @@
 import { gql, request } from 'graphql-request';
 // import { tw } from 'twind';
+import { useRef } from 'react';
 import { NextPageWithLayout } from '../../types/page';
-import Posts from '../components/layout/Posts/Posts';
-// import Slider from '../components/layout/Slider/Slider';
+import Hero from '../components/sections/Hero/Hero';
 import Newsletter from '../components/sections/Newsletter/Newsletter';
+import Posts from '../components/sections/Posts/Posts';
 import { getMainLayout } from '../layouts/Main/MainLayout';
-
-// export const getStaticProps = async () => {
-//   const endpoint: any = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
-
-//   const query = gql`
-//     query {
-//       slides {
-//         data {
-//           id
-//           attributes {
-//             title
-//             image {
-//               data {
-//                 id
-//                 attributes {
-//                   alternativeText
-//                   url
-//                   width
-//                   height
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   `;
-
-//   const {
-//     slides: { data: slidesData },
-//   } = await request(endpoint, query);
-
-//   return {
-//     props: { slidesData },
-//   };
-// };
 
 export const getStaticProps = async () => {
   const endpoint: any = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
 
   const query = gql`
     query {
-      posts(sort: "publishedAt:asc", pagination: { limit: 3 }) {
+      posts(sort: "publishedAt:desc", pagination: { limit: 3 }) {
         data {
-          id
           attributes {
             title
             slug
             banner {
               data {
                 attributes {
+                  height
+                  width
                   alternativeText
                   url
-                  width
-                  height
+                }
+              }
+            }
+          }
+        }
+      }
+
+      frontPageHero {
+        data {
+          attributes {
+            title
+            subtitle
+            image {
+              data {
+                attributes {
+                  alternativeText
+                  url
                 }
               }
             }
@@ -69,22 +50,23 @@ export const getStaticProps = async () => {
     }
   `;
 
-  const {
-    posts: { data: postsData },
-  } = await request(endpoint, query);
+  const data = await request(endpoint, query);
 
   return {
-    props: { postsData },
+    props: { data },
   };
 };
 
-const Home: NextPageWithLayout = ({ postsData }: any) => {
-  // console.log(postsData);
+const Home: NextPageWithLayout = ({ data }: any) => {
+  const firstSectionRef = useRef();
+
+  const heroData = data.frontPageHero.data;
+  const postsData = data.posts.data;
 
   return (
     <>
-      {/* <Slider data={slidesData} /> */}
-      <Posts data={postsData} />
+      <Hero firstSectionRef={firstSectionRef} data={heroData} />
+      <Posts firstSectionRef={firstSectionRef} data={postsData} />
       <Newsletter />
     </>
   );

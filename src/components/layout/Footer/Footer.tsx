@@ -17,7 +17,7 @@ const Footer: React.FC<IFooterFunctions> = () => {
       top: {
         base: tw`flex(& col sm:(row)) sm:justify-between gap(y(8) sm:(x(8))) mb-8`,
 
-        logo: tw`text(2xl)`,
+        logo: tw`text(xl) font(sora bold)`,
 
         lists: tw`flex justify-start gap(x(8 md:(32) lg:(48) xl:(64)))`,
         list: tw`
