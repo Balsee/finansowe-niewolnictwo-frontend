@@ -1,6 +1,6 @@
 import { IconArrowRight } from '@tabler/icons';
 import Image from 'next/image';
-import { tw } from 'twind';
+import { useMediaQuery } from 'usehooks-ts';
 import Wrapper from '../../utils/Wrapper/Wrapper';
 
 export interface IHero {
@@ -15,41 +15,30 @@ const Hero: React.FC<IHeroFunctions> = ({ data, firstSectionRef }) => {
     window.scroll({ top: firstSectionRef.current.offsetTop - 64, behavior: 'smooth' });
   };
 
-  const styles = {
-    hero: {
-      base: tw`relative h-[calc(100vh-4rem)]`,
-
-      wrapper: tw`flex(& col)`,
-
-      text: tw`flex(& col) gap(y-2 md:(y-8))  absolute z-[5] font(sora) py-4 bottom(16 sm:(32) md:(1/4))`,
-      title: tw`font(bold) text(2xl sm:(3xl) md:(4xl) lg:(5xl)) max-w(md:(xl) lg:(2xl)) !leading-[1.2] `,
-      subtitle: tw`text(sm sm:(lg) md:(xl) lg:(2xl) xl:(3xl))`,
-
-      buttons: {
-        base: tw`mt-4`,
-
-        button: tw`flex(& row) items-center bg-[#121212] py-4 px-4 gap-x-2`,
-      },
-
-      background: tw`object-cover h-[calc(100vh-4rem)] w-full`,
-    },
-  };
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   return (
-    <section className={styles.hero.base}>
-      <Wrapper classes={styles.hero.wrapper}>
+    <section className="relative h-[calc(100vh-4rem)]">
+      <Wrapper classes="flex flex-col">
         <div
-          className={styles.hero.text}
+          className="absolute bottom-16 z-[5] flex flex-col gap-y-2 py-4 font-sora sm:bottom-32 md:bottom-1/4 md:gap-y-8"
           style={{
             filter: 'drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06))',
           }}
         >
-          <h1 className={styles.hero.title}>{data.attributes.title}</h1>
-          <span className={styles.hero.subtitle}>{data.attributes.subtitle}</span>
+          <h1 className="text-2xl font-bold !leading-[1.2] text-white sm:text-3xl md:max-w-xl md:text-4xl lg:max-w-2xl lg:text-5xl">
+            {data.attributes.title}
+          </h1>
+          <span className="text-sm text-white  sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+            {data.attributes.subtitle}
+          </span>
 
-          <div className={styles.hero.buttons.base}>
-            <button onClick={() => scrollToFirstSection()} className={styles.hero.buttons.button}>
-              Czytaj dalej <IconArrowRight size={24} />
+          <div className="mt-4">
+            <button
+              onClick={() => scrollToFirstSection()}
+              className="flex flex-row items-center gap-x-2 rounded-lg border bg-white p-3 text-sm md:p-4 md:text-lg"
+            >
+              Czytaj dalej <IconArrowRight size={isMobile ? 20 : 24} />
             </button>
           </div>
         </div>
@@ -57,7 +46,7 @@ const Hero: React.FC<IHeroFunctions> = ({ data, firstSectionRef }) => {
 
       <Image
         layout="fill"
-        className={styles.hero.background + ` brightness-75`}
+        className="h-[calc(100vh-4rem)] w-full object-cover brightness-75"
         style={{
           filter: 'brightness(0.75)',
         }}

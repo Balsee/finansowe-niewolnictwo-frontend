@@ -1,4 +1,7 @@
 import { gql, request } from 'graphql-request';
+import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
+import Wrapper from '../../components/utils/Wrapper/Wrapper';
 import { getMainLayout } from '../../layouts/Main/MainLayout';
 
 export const getStaticPaths = async () => {
@@ -15,9 +18,13 @@ export const getStaticPaths = async () => {
     }
   `;
 
+  const headers = {
+    authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
+  };
+
   const {
     posts: { data },
-  } = await request(endpoint, query);
+  } = await request(endpoint, query, headers);
 
   const paths = data.map((post: any) => {
     return { params: { slug: post.attributes.slug.toString() } };
@@ -69,9 +76,13 @@ export const getStaticProps = async ({ params }: any) => {
     slug: params.slug,
   };
 
+  const headers = {
+    authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
+  };
+
   const {
     posts: { data },
-  } = await request(endpoint, query, variables);
+  } = await request(endpoint, query, variables, headers);
 
   return {
     props: { data },
@@ -80,8 +91,28 @@ export const getStaticProps = async ({ params }: any) => {
 
 const Post = ({ data }: any) => {
   const post = data[0];
+  const banner = post.attributes.banner.data.attributes;
 
-  return <div>{post.attributes.title}</div>;
+  return (
+    <article className="my-20 font-publicSans md:my-32">
+      <Wrapper>
+        <Image
+          className="rounded-lg"
+          src={process.env.NEXT_PUBLIC_BACKEND_ENDPOINT + banner.url}
+          alt={banner.alternativeText}
+          layout="responsive"
+          objectFit="cover"
+          height={48}
+          width={128}
+        />
+        <h1 className="my-8 text-2xl font-bold md:my-16 md:text-3xl lg:text-4xl">{post.attributes.title}</h1>
+
+        <ReactMarkdown className="prose w-full max-w-full" transformImageUri={src => `http://localhost:2137${src}`}>
+          {post.attributes.content}
+        </ReactMarkdown>
+      </Wrapper>
+    </article>
+  );
 };
 
 Post.getLayout = getMainLayout;

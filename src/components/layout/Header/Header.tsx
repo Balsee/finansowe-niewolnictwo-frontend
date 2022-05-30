@@ -1,8 +1,9 @@
 import { Switch } from '@headlessui/react';
 import { IconBrandInstagram, IconMenu2, IconX } from '@tabler/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { tw } from 'twind';
+import { useMediaQuery } from 'usehooks-ts';
 import Wrapper from '../../utils/Wrapper/Wrapper';
 
 export interface IHeader {}
@@ -10,56 +11,40 @@ export interface IHeader {}
 export interface IHeaderFunctions extends IHeader {}
 
 const Header: React.FC<IHeaderFunctions> = () => {
+  // if mobile
+  const matches = useMediaQuery('(max-width: 767px)');
   const [enabled, setEnabled] = useState(false);
+  const route = useRouter().asPath;
 
   useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth > 768) {
-        setEnabled(true);
-      } else {
-        setEnabled(false);
-      }
-    }
-
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
+    matches ? setEnabled(false) : setEnabled(true);
   }, []);
 
-  const styles = {
-    header: {
-      base: tw`fixed w-full top-0 py-4 z-10 bg-[#121212] h-16`,
+  useEffect(() => {
+    matches ? setEnabled(false) : setEnabled(true);
+  }, [matches]);
 
-      wrapper: tw`flex justify-between items-center h-full`,
-
-      logo: tw`font(sora bold) text(xl)`,
-      switch: tw`md:hidden`,
-      nav: {
-        base: tw`absolute z-10 h-[calc(100vh-4rem)] w-full left-0 top-full bg-[#121212] p-8 flex(& col) justify-around items-center text(center) md:(static w-auto h-auto bg-transparent p-0 flex-row gap-x-8) `,
-
-        list: tw`flex(& col) font(publicSans) text(3xl) gap-y-8 md:(text(lg) flex(row) gap-x-4)`,
-        icon: tw`scale-150 md:(scale-90)`,
-      },
-    },
-  };
+  useEffect(() => {
+    matches ? setEnabled(false) : setEnabled(true);
+  }, [route]);
 
   return (
-    <header className={styles.header.base}>
-      <Wrapper classes={styles.header.wrapper}>
-        <div className={styles.header.logo}>Finansowe Niewolnictwo</div>
+    <header className="fixed top-0 z-50 h-16 w-full border-b bg-white py-8">
+      <Wrapper classes="flex justify-between items-center h-full">
+        <Link href="/">
+          <a className="font-sora text-xl font-bold">Finansowe Niewolnictwo</a>
+        </Link>
 
-        <Switch className={styles.header.switch} checked={enabled} onChange={setEnabled}>
+        <Switch className="md:hidden" checked={enabled} onChange={setEnabled}>
           {!enabled ? <IconMenu2 size={32} /> : <IconX size={32} />}
         </Switch>
 
         {enabled ? (
-          <nav className={styles.header.nav.base}>
-            <ul className={styles.header.nav.list}>
+          <nav className="absolute left-0 top-full z-50 flex h-[calc(100vh-4rem)] w-full flex-col items-center justify-around bg-white p-8 text-center md:static md:h-auto md:w-auto md:flex-row md:gap-x-8 md:bg-transparent md:p-0">
+            <ul className="flex flex-col gap-y-8 font-publicSans text-3xl md:flex-row md:gap-x-4 md:text-lg">
               <li>
                 <Link href="/">
-                  <a>Home</a>
+                  <a>Strona Główna</a>
                 </Link>
               </li>
               <li>
@@ -73,11 +58,11 @@ const Header: React.FC<IHeaderFunctions> = () => {
                 </Link>
               </li>
             </ul>
-            <ul className={styles.header.nav.list}>
+            <ul className="flex flex-col gap-y-8 font-publicSans text-3xl md:flex-row md:gap-x-4 md:text-lg">
               <li>
                 <Link href="https://www.instagram.com/finansowe_niewolnictwo/">
                   <a target="_blank" rel="noopener noreferrer">
-                    <IconBrandInstagram className={styles.header.nav.icon} size={32} />
+                    <IconBrandInstagram className="scale-150 md:scale-90" size={32} />
                   </a>
                 </Link>
               </li>

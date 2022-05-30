@@ -1,5 +1,3 @@
-import { tw } from 'twind';
-
 export interface ISeparator {
   orientation?: string;
   thickness?: number;
@@ -12,19 +10,21 @@ export interface ISeparatorFunctions extends ISeparator {}
 const Separator: React.FC<ISeparatorFunctions> = ({
   orientation = 'x',
   thickness = 1,
-  color = 'black',
+  color = 'gray-200',
   colorDark = 'white',
 }) => {
-  const styles = {
-    separator: tw`
-      bg(${color} dark:(${colorDark}))
-      ${orientation === 'x' ? `h-[${thickness}px] w-full` : null}
-      ${orientation === 'y' ? `w-[${thickness}px] h-full` : null}
-      opacity-50
-    `,
-  };
-
-  return <div className={styles.separator} />;
+  return (
+    // <div
+    //   className={`bg-${color} dark:bg-${colorDark}
+    //     ${orientation === 'x' ? `h-[${thickness}px] w-full` : null}
+    //     ${orientation === 'y' ? `w-[${thickness}px] h-full` : null}`}
+    // />
+    <div
+      className={`${orientation === 'x' ? `h-[${thickness}px] w-full` : ''} ${
+        orientation === 'y' ? `w-[${thickness}px] h-full` : ''
+      } bg-${color} dark:bg-${colorDark}`}
+    />
+  );
 };
 
 export default Separator;

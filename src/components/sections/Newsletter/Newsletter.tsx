@@ -1,5 +1,3 @@
-import { apply, tw } from 'twind';
-import { css } from 'twind/css';
 import Wrapper from '../../utils/Wrapper/Wrapper';
 
 export interface INewsletter {}
@@ -7,35 +5,25 @@ export interface INewsletter {}
 export interface INewsletterFunctions extends INewsletter {}
 
 const Newsletter: React.FC<INewsletterFunctions> = () => {
-  const styles = {
-    newsletter: {
-      base: tw`py(8 sm:(16) lg:(32))`,
-
-      wrapper: tw`flex(& col) gap-y-2`,
-
-      title: tw`text(2xl md:(3xl) lg:(4xl)) font(bold sora)`,
-      subtitle: tw`text(xs sm:(sm) md:(lg) lg:(xl)) font(thin publicSans) before::(w-1 h-1 bg-red-500) opacity-50 mb-6`,
-
-      form: tw`
-      flex(&) justify-start gap-x-4
-
-      ${css({
-        input: apply`p-4 w-full border(& 1) max-w-[376px]`,
-        button: apply`w-max px(4 md:(8)) py-4 border(& 1) bg-white text(black) font(semibold)`,
-      })}
-      `,
-    },
-  };
-
   return (
-    <section className={styles.newsletter.base}>
-      <Wrapper classes={styles.newsletter.wrapper}>
-        <h2 className={styles.newsletter.title}>Chcesz wiedzieć więcej na temat finansów?</h2>
-        <p className={tw(styles.newsletter.subtitle)}>Podaj nam swój email i zarejestruj się do naszego newslettera.</p>
+    <section className="py-8 sm:py-16 lg:py-32">
+      <Wrapper classes="flex flex-col gap-y-2">
+        <h2 className="font-sora) text-2xl font-bold md:text-3xl lg:text-4xl">
+          Chcesz wiedzieć więcej na temat finansów?
+        </h2>
+        <p className="mb-6 font-publicSans text-xs font-thin opacity-50 before:h-1 before:w-1 before:bg-red-500 before:content-none sm:text-sm md:text-lg lg:text-xl ">
+          Podaj nam swój email i zarejestruj się do naszego newslettera.
+        </p>
 
-        <form className={tw(styles.newsletter.form)}>
-          <input type="text" placeholder="Enter your email" />
-          <button>Submit</button>
+        <form className="flex justify-start gap-x-4">
+          <input
+            className="border-1 w-full max-w-[376px] rounded-lg border p-4"
+            type="text"
+            placeholder="jan@kowalski.pl"
+          />
+          <button className="border-1 w-max rounded-lg border bg-white px-4 py-4 font-semibold text-black md:px-8">
+            Wyślij
+          </button>
         </form>
       </Wrapper>
     </section>
