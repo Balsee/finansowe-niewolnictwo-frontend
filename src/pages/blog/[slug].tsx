@@ -1,4 +1,4 @@
-import { gql, request } from 'graphql-request';
+import { gql, GraphQLClient } from 'graphql-request';
 import Image from 'next/image';
 import ReactMarkdown from 'react-markdown';
 import Wrapper from '../../components/utils/Wrapper/Wrapper';
@@ -6,6 +6,13 @@ import { getMainLayout } from '../../layouts/Main/MainLayout';
 
 export const getStaticPaths = async () => {
   const endpoint: any = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
+
+  const client = new GraphQLClient(endpoint, {
+    headers: {
+      authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
+    },
+  });
+
   const query = gql`
     query {
       posts {
@@ -18,13 +25,9 @@ export const getStaticPaths = async () => {
     }
   `;
 
-  const headers = {
-    authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
-  };
-
   const {
     posts: { data },
-  } = await request(endpoint, query, headers);
+  } = await client.request(query);
 
   const paths = data.map((post: any) => {
     return { params: { slug: post.attributes.slug.toString() } };
@@ -38,6 +41,12 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }: any) => {
   const endpoint: any = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
+
+  const client = new GraphQLClient(endpoint, {
+    headers: {
+      authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
+    },
+  });
 
   const query = gql`
     query ($slug: String!) {
@@ -76,13 +85,9 @@ export const getStaticProps = async ({ params }: any) => {
     slug: params.slug,
   };
 
-  const headers = {
-    authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
-  };
-
   const {
     posts: { data },
-  } = await request(endpoint, query, variables, headers);
+  } = await client.request(query, variables);
 
   return {
     props: { data },

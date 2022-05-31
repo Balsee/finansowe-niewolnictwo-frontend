@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react';
 import { IconSortAscending, IconSortDescending } from '@tabler/icons';
-import request, { gql } from 'graphql-request';
+import { gql, GraphQLClient } from 'graphql-request';
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'usehooks-ts';
 import Card from '../../components/common/Card/Card';
@@ -9,6 +9,12 @@ import { getMainLayout } from '../../layouts/Main/MainLayout';
 
 export const getServerSideProps = async () => {
   const endpoint: any = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
+
+  const client = new GraphQLClient(endpoint, {
+    headers: {
+      authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
+    },
+  });
 
   const query = gql`
     query {
@@ -33,7 +39,7 @@ export const getServerSideProps = async () => {
     }
   `;
 
-  const data = await request(endpoint, query);
+  const data = await client.request(query);
 
   return {
     props: { data },

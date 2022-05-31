@@ -1,4 +1,4 @@
-import { gql, request } from 'graphql-request';
+import { gql, GraphQLClient } from 'graphql-request';
 // import { tw } from 'twind';
 import { useRef } from 'react';
 import { NextPageWithLayout } from '../../types/page';
@@ -9,6 +9,12 @@ import { getMainLayout } from '../layouts/Main/MainLayout';
 
 export const getStaticProps = async () => {
   const endpoint: any = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
+
+  const client = new GraphQLClient(endpoint, {
+    headers: {
+      authorization: `Bearer ${process.env.NEXT_PUBLIC_BACKEND_API_TOKEN}`,
+    },
+  });
 
   const query = gql`
     query {
@@ -50,7 +56,7 @@ export const getStaticProps = async () => {
     }
   `;
 
-  const data = await request(endpoint, query);
+  const data = await client.request(query);
 
   return {
     props: { data },
