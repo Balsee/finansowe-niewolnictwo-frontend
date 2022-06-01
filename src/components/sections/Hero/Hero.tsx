@@ -50,7 +50,7 @@ const Hero: React.FC<IHeroFunctions> = ({ data, firstSectionRef }) => {
         style={{
           filter: 'brightness(0.75)',
         }}
-        src={process.env.NEXT_PUBLIC_BACKEND_ENDPOINT + data.attributes.image.data.attributes.url}
+        src={data.attributes.image.data.attributes.url}
         alt={data.attributes.image.data.attributes.alternativeText}
       />
     </section>

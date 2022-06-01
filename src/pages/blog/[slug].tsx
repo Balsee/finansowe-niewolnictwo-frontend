@@ -103,7 +103,7 @@ const Post = ({ data }: any) => {
       <Wrapper>
         <Image
           className="rounded-lg"
-          src={process.env.NEXT_PUBLIC_BACKEND_ENDPOINT + banner.url}
+          src={banner.url}
           alt={banner.alternativeText}
           layout="responsive"
           objectFit="cover"

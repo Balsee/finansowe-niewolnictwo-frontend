@@ -17,7 +17,7 @@ const Card: React.FC<ICardFunctions> = ({ post }) => {
     <Link href={`/blog/${post.attributes.slug}`}>
       <a className="relative flex h-48 w-full flex-col rounded-lg">
         <Image
-          src={process.env.NEXT_PUBLIC_BACKEND_ENDPOINT + banner.url}
+          src={banner.url}
           width={banner.width}
           // height={768}
           quality={50}
